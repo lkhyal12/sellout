@@ -44,7 +44,7 @@ export const useAuthStore = create((set, get) => ({
       return toast.error("Email and Password are required", { id: "login" });
     set({ loading: true });
     try {
-      const response = await axiosInstance("/auth/login", {
+      const response = await axiosInstance.post("/auth/login", {
         email: trimmedEmail,
         password,
       });
@@ -52,10 +52,11 @@ export const useAuthStore = create((set, get) => ({
       return { success: true };
     } catch (error) {
       const errMsg = getErrorMsg(error);
+      console.log(error);
       toast.error(errMsg, { id: "loginError" });
       return { success: false };
     } finally {
-      set({ laoding: false });
+      set({ loading: false });
     }
   },
   // logout function
@@ -76,6 +77,7 @@ export const useAuthStore = create((set, get) => ({
   // check auth function
   checkAuth: async () => {
     set({ isCheckingAuth: true });
+    console.log("hhhh");
     try {
       const response = await axiosInstance.get("/auth/profile", {
         headers: {
@@ -83,6 +85,7 @@ export const useAuthStore = create((set, get) => ({
           Authorization: `Bearer ${get().accessToken}`,
         },
       });
+      console.log({ response });
       set({
         user: response.data.user,
         isAdmin: response.data.user.role === "admin",

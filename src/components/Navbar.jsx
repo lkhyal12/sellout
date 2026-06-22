@@ -1,14 +1,15 @@
 import { LogIn, LogOut, ShoppingCart, UserPlus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
 
 const Navbar = () => {
-  const isAdmin = true;
-  const user = false;
+  const { user, isAdmin } = useAuthStore();
   const cart = [1];
   const navigate = useNavigate();
+
   return (
-    <div className="bg-black/80">
-      <nav className="flex items-center justify-between px-6 py-3">
+    <div className="fixed top-0 left-0 w-full z-20 bg-black/80">
+      <nav className=" flex items-center justify-between px-6 py-3">
         <h1
           className="text-blue-600  cursor-pointer font-bold text-3xl"
           onClick={() => navigate("/")}
@@ -40,7 +41,10 @@ const Navbar = () => {
           )}
 
           {user && (
-            <button className="bg-gray-600 text-gray-100 outline-none border-none rounded cursor-pointer flex items-center gap-2 px-2 py-1">
+            <button
+              className="bg-gray-600 text-gray-100 outline-none border-none rounded cursor-pointer flex items-center gap-2 px-2 py-1"
+              onClick={() => logOut()}
+            >
               <LogOut size={20} />
               Logout
             </button>
@@ -48,12 +52,18 @@ const Navbar = () => {
 
           {!user && (
             <div className="flex items-center gap-2">
-              <button className="bg-gray-600 text-gray-100 outline-none border-none rounded cursor-pointer flex items-center gap-2 px-3 py-1">
+              <button
+                className="bg-gray-600 text-gray-100 outline-none border-none rounded cursor-pointer flex items-center gap-2 px-3 py-1"
+                onClick={() => navigate("/login")}
+              >
                 <LogIn size={20} />
                 Login
               </button>
 
-              <button className="bg-gray-600 text-gray-100 outline-none border-none rounded cursor-pointer flex items-center gap-2 px-2 py-1">
+              <button
+                className="bg-gray-600 text-gray-100 outline-none border-none rounded cursor-pointer flex items-center gap-2 px-2 py-1"
+                onClick={() => navigate("/signup")}
+              >
                 <UserPlus size={20} />
                 Sign Up
               </button>
